@@ -1,0 +1,10 @@
+load("//:docker/docker_rules.bzl", "docker_run")
+
+docker_run(
+    name = "hello_container",
+    image = "bazel-experiments/hello:latest",
+    context = "docker",
+    dockerfile = "docker/Dockerfile",
+)
+
+
