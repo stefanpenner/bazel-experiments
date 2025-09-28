@@ -29,9 +29,10 @@ def deploy(name, image, repo_tag):
     executable = True,
     cmd = """
         # Ensure image is loaded before attempting to run it.
-        $(location :{oci_load_target})
-        # Then, run the docker image and capture its output.
-        docker run --rm {repo_tag} > $@
+        $(location :{oci_load_target}) && \
+
+        # note: we probably want to name the container based on it's FQN bazel name
+        docker run --rm -i --network host {repo_tag} | tee $@
       """.format(
         oci_load_target = oci_load_target,
         repo_tag = repo_tag
