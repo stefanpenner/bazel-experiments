@@ -15,13 +15,23 @@ use_repo(node, "nodejs_toolchains")
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_node20",
-    digest = "sha256:e8a4044e0b4ae4257efa45fc026c0bc30ad320d43bd4c1a7d5271bd241e386d0",
+    digest = "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
     image = "gcr.io/distroless/nodejs20-debian12",
+    tag = "latest",
     platforms = [
         "linux/arm64/v8",
         "linux/amd64",
     ],
 )
-
+oci.pull(
+    name = "distroless_node20_debug",
+    digest = "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
+    image = "gcr.io/distroless/nodejs20-debian12",
+    tag = "debug",
+    platforms = [
+        "linux/arm64/v8",
+        "linux/amd64",
+    ],
+)
 # Expose the pulled repo to this module
 use_repo(oci, "distroless_node20", "distroless_node20_linux_amd64", "distroless_node20_linux_arm64_v8")

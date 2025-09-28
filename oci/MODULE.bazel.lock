@@ -628,7 +628,7 @@
     "@@rules_oci+//oci:extensions.bzl%oci": {
       "general": {
         "bzlTransitiveDigest": "anfgzQokiHri4FJRiW4KvwSfiR7ComgkDZBoR/2HI1I=",
-        "usagesDigest": "q63++/+1RbW91I2mHY6yih0ImUlDLOrnNsMjuDfo+MQ=",
+        "usagesDigest": "fyvVIX49D5Pz+loWnkpnalIGTCYxAmdlpsdJ/nwrx+o=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -640,7 +640,7 @@
               "scheme": "https",
               "registry": "gcr.io",
               "repository": "distroless/nodejs20-debian12",
-              "identifier": "sha256:e8a4044e0b4ae4257efa45fc026c0bc30ad320d43bd4c1a7d5271bd241e386d0",
+              "identifier": "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
               "platform": "linux/arm64/v8",
               "target_name": "distroless_node20_linux_arm64_v8",
               "bazel_tags": []
@@ -653,7 +653,7 @@
               "scheme": "https",
               "registry": "gcr.io",
               "repository": "distroless/nodejs20-debian12",
-              "identifier": "sha256:e8a4044e0b4ae4257efa45fc026c0bc30ad320d43bd4c1a7d5271bd241e386d0",
+              "identifier": "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
               "platform": "linux/amd64",
               "target_name": "distroless_node20_linux_amd64",
               "bazel_tags": []
@@ -667,12 +667,55 @@
               "scheme": "https",
               "registry": "gcr.io",
               "repository": "distroless/nodejs20-debian12",
-              "identifier": "sha256:e8a4044e0b4ae4257efa45fc026c0bc30ad320d43bd4c1a7d5271bd241e386d0",
+              "identifier": "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
               "platforms": {
                 "@@platforms//cpu:arm64": "@distroless_node20_linux_arm64_v8",
                 "@@platforms//cpu:x86_64": "@distroless_node20_linux_amd64"
               },
               "bzlmod_repository": "distroless_node20",
+              "reproducible": true
+            }
+          },
+          "distroless_node20_debug_linux_arm64_v8": {
+            "repoRuleId": "@@rules_oci+//oci/private:pull.bzl%oci_pull",
+            "attributes": {
+              "www_authenticate_challenges": {},
+              "scheme": "https",
+              "registry": "gcr.io",
+              "repository": "distroless/nodejs20-debian12",
+              "identifier": "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
+              "platform": "linux/arm64/v8",
+              "target_name": "distroless_node20_debug_linux_arm64_v8",
+              "bazel_tags": []
+            }
+          },
+          "distroless_node20_debug_linux_amd64": {
+            "repoRuleId": "@@rules_oci+//oci/private:pull.bzl%oci_pull",
+            "attributes": {
+              "www_authenticate_challenges": {},
+              "scheme": "https",
+              "registry": "gcr.io",
+              "repository": "distroless/nodejs20-debian12",
+              "identifier": "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
+              "platform": "linux/amd64",
+              "target_name": "distroless_node20_debug_linux_amd64",
+              "bazel_tags": []
+            }
+          },
+          "distroless_node20_debug": {
+            "repoRuleId": "@@rules_oci+//oci/private:pull.bzl%oci_alias",
+            "attributes": {
+              "target_name": "distroless_node20_debug",
+              "www_authenticate_challenges": {},
+              "scheme": "https",
+              "registry": "gcr.io",
+              "repository": "distroless/nodejs20-debian12",
+              "identifier": "sha256:adce8f03e2b82454f0e36843879529ad8d2d1e6cc43ce26ff6124f04ab84a6cd",
+              "platforms": {
+                "@@platforms//cpu:arm64": "@distroless_node20_debug_linux_arm64_v8",
+                "@@platforms//cpu:x86_64": "@distroless_node20_debug_linux_amd64"
+              },
+              "bzlmod_repository": "distroless_node20_debug",
               "reproducible": true
             }
           },
@@ -794,7 +837,10 @@
           "explicitRootModuleDirectDeps": [
             "distroless_node20",
             "distroless_node20_linux_arm64_v8",
-            "distroless_node20_linux_amd64"
+            "distroless_node20_linux_amd64",
+            "distroless_node20_debug",
+            "distroless_node20_debug_linux_arm64_v8",
+            "distroless_node20_debug_linux_amd64"
           ],
           "explicitRootModuleDirectDevDeps": [],
           "useAllRepos": "NO",
