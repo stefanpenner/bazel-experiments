@@ -3,6 +3,7 @@ bazel_dep(name = "aspect_rules_js", version = "2.6.0")
 bazel_dep(name = "rules_nodejs", version = "6.5.0")
 bazel_dep(name = "rules_pkg", version = "0.10.1")
 bazel_dep(name ="platforms", version = "1.0.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
 ## NODE.js stuff:
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(
