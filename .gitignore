@@ -1,0 +1,4 @@
+oci/bazel-bin
+oci/bazel-oci
+oci/bazel-out
+oci/bazel-testlogs

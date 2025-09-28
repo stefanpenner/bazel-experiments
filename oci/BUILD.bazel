@@ -1,0 +1,24 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test", "js_binary")
+load(":run.bzl", "cli_run")
+
+js_library(
+  name = "lib",
+  srcs = ["lib.mjs"]
+)
+
+js_binary(
+  name = "cli",
+  entry_point = "cli.mjs",
+  data = [":lib"]
+)
+
+js_test(
+  name = "test",
+  entry_point = "test.mjs",
+  data = [":lib"],
+)
+
+cli_run(
+  name = "run_cli",
+  cli = ":cli",
+)

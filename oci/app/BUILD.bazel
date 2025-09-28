@@ -1,0 +1,36 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test", "js_binary")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+
+js_library(
+  name = "app_lib",
+  srcs = ["app.mjs"]
+)
+
+js_binary(
+  name = "app.bin",
+  entry_point = "app.mjs"
+)
+
+pkg_tar(
+    name = "app",
+    srcs = [":app_lib", ":control"],
+    strip_prefix = "/",
+    package_dir = "/",
+    allow_duplicates_with_different_content = False
+)
+
+oci_image(
+    name = "app.image",
+    base = "@distroless_node20//:distroless_node20",
+    entrypoint = ["/app/control"],
+    tars = [":app.tar"],
+)
+
+# after running bazel run //app:docker.load
+# docker can now be run via `bazel run --rm iamstef.net/app:latest`
+oci_load(
+    name = "load.oci",
+    image = "app.image",
+    repo_tags = ["iamstef.net/app:latest"],
+)
