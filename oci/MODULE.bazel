@@ -2,7 +2,7 @@ bazel_dep(name = "rules_oci", version = "2.2.6")
 bazel_dep(name = "aspect_rules_js", version = "2.6.0")
 bazel_dep(name = "rules_nodejs", version = "6.5.0")
 bazel_dep(name = "rules_pkg", version = "0.10.1")
-
+bazel_dep(name ="platforms", version = "1.0.0")
 ## NODE.js stuff:
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(
@@ -14,16 +14,13 @@ use_repo(node, "nodejs_toolchains")
 # Container stuff
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
-    name = "distroless_node20",  # this makes the label prefix @distroless
+    name = "distroless_node20",
     digest = "sha256:e8a4044e0b4ae4257efa45fc026c0bc30ad320d43bd4c1a7d5271bd241e386d0",
     image = "gcr.io/distroless/nodejs20-debian12",
     platforms = [
         "linux/arm64/v8",
         "linux/amd64",
     ],
-
-    # choose exactly one of these:
-    tag = "nonroot",  # easy, but not reproducible
 )
 
 # Expose the pulled repo to this module

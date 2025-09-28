@@ -23,9 +23,15 @@ pkg_tar(
 
 oci_image(
     name = "app.image",
-    base = "@distroless_node20//:distroless_node20",
-    cmd = ["/app/app.mjs"],
+    base = select({
+      "@platforms//cpu:arm64":  "@distroless_node20_linux_arm64_v8//:image",
+      "@platforms//cpu:x86_64": "@distroless_node20_linux_amd64//:image",
+    }),
     tars = [":app.tar"],
+    workdir = "/app",
+    user = "nonroot:nonroot",
+    env = {"PATH": "/nodejs/bin"},
+    entrypoint = ["node", "/app/app.mjs"],
 )
 
 deploy(
