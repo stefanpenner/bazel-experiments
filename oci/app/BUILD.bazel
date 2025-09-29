@@ -3,14 +3,18 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
 load("//:deploy.bzl", "deploy")
 
-js_library(
-  name = "app",
-  srcs = ["app.mjs"]
+filegroup(
+  name = "app.files",
+  srcs = [
+    "app.mjs",
+    "handler.mjs",
+  ],
 )
 
 js_binary(
   name = "app.bin",
-  entry_point = "app.mjs"
+  entry_point = "app.mjs",
+  data = [":app.files"],
 )
 
 js_test(
@@ -20,7 +24,7 @@ js_test(
 
 pkg_tar(
     name = "app.tar",
-    srcs = [":app"],
+    srcs = [":app.files"],
     strip_prefix = "/",
     package_dir = "/",
     allow_duplicates_with_different_content = False

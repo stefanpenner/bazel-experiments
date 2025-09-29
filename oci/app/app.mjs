@@ -1,11 +1,9 @@
 import http from "node:http";
+import handler from './handler.mjs'
 
 const PORT = Number(process.env.PORT) || 8080;
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "content-type": "application/json" });
-  res.end(`${new Date()} Hello, World!`);
-});
+const server = http.createServer(handler);
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`listening on http://0.0.0.0:${PORT}`);
