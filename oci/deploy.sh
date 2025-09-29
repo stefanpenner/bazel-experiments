@@ -43,4 +43,19 @@ fi
 
 "$DEPLOY_OCI_LOAD_BINARY"
 
-docker run --rm -i --network host "$DEPLOY_REPO_TAG"
+docker_args=(--rm -i --network host)
+
+if [[ -n "${DEPLOY_PORT:-}" ]]; then
+  docker_args+=(-e PORT="$DEPLOY_PORT" -p "$DEPLOY_PORT:$DEPLOY_PORT")
+fi
+
+if [[ -n "${DEPLOY_ENV_KEYS:-}" ]]; then
+  for key in $DEPLOY_ENV_KEYS; do
+    value=${!key:-}
+    docker_args+=(-e "$key=$value")
+  done
+fi
+
+docker_args+=("$DEPLOY_REPO_TAG")
+
+docker run "${docker_args[@]}"
