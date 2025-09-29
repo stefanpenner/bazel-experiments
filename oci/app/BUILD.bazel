@@ -20,6 +20,7 @@ js_binary(
 js_test(
   name = "app.test",
   entry_point = "test.mjs",
+  data = [":app.files"],
 )
 
 pkg_tar(
