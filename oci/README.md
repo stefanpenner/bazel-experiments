@@ -1,3 +1,12 @@
+# Bazel OCI Deployment Demo
+
+This project demonstrates a complete Bazel workflow for building, containerizing, and locally deploying multiple services. It showcases:
+- Building multiple services with Bazel
+- Packaging services as OCI containers
+- Local deployment with `bazel run`
+- Seamless inter-connectivity between host and containerized services
+- Custom Bazel deployment macros for streamlined operations
+
 ### Requirements
 - Docker Desktop >= 4.34
 - Host networking enabled (Docker Desktop → Settings → Resources → Network → Enable host networking, then restart Docker)
