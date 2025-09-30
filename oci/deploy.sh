@@ -2,48 +2,26 @@
 
 set -euo pipefail
 
-# Try to locate runfiles helpers if Bazel didn't set the environment for us.
-if [[ -z "${RUNFILES_DIR:-}" && -z "${RUNFILES_MANIFEST_FILE:-}" ]]; then
-  case "${BASH_SOURCE[0]}" in
-  */*) script_dir="${BASH_SOURCE[0]%/*}" ;;
-  *) script_dir="." ;;
-  esac
-
-  if [[ -d "${BASH_SOURCE[0]}.runfiles" ]]; then
-    export RUNFILES_DIR="${BASH_SOURCE[0]}.runfiles"
-  elif [[ -f "${BASH_SOURCE[0]}.runfiles_manifest" ]]; then
-    export RUNFILES_MANIFEST_FILE="${BASH_SOURCE[0]}.runfiles_manifest"
-  elif [[ -d "$script_dir/../_main.runfiles" ]]; then
-    export RUNFILES_DIR="$script_dir/../_main.runfiles"
-  elif [[ -f "$script_dir/../_main.runfiles_manifest" ]]; then
-    export RUNFILES_MANIFEST_FILE="$script_dir/../_main.runfiles_manifest"
-  fi
-fi
-
-if [[ -n "${RUNFILES_DIR:-}" && -f "$RUNFILES_DIR/bazel_tools/tools/bash/runfiles/runfiles.bash" ]]; then
-  # shellcheck source=/dev/null
-  source "$RUNFILES_DIR/bazel_tools/tools/bash/runfiles/runfiles.bash"
-elif [[ -n "${RUNFILES_MANIFEST_FILE:-}" ]]; then
-  runfiles_bash="$(grep -m1 '^bazel_tools/tools/bash/runfiles/runfiles.bash ' "$RUNFILES_MANIFEST_FILE" | cut -d ' ' -f 2-)"
-  if [[ -z "$runfiles_bash" ]]; then
-    echo "Unable to locate runfiles.bash from manifest" >&2
+# Bootstrap runfiles, and ensure they are present
+if [[ ! -v RUNFILES_DIR ]]; then
+  [[ -d "$0.runfiles" ]] || {
+    echo "no runfiles dir; try 'bazel run'"
     exit 1
-  fi
-  # shellcheck source=/dev/null
-  source "$runfiles_bash"
-else
-  echo "RUNFILES_DIR or RUNFILES_MANIFEST_FILE must be set" >&2
+  }
+  export RUNFILES_DIR="$0.runfiles"
+fi
+
+# ensure mandetory envvar are set
+if [[ -z "${DEPLOY_OCI_LOAD_EXECUTABLE:-}" || -z "${DEPLOY_REPO_TAG:-}" ]]; then
+  echo "DEPLOY_OCI_LOAD_EXECUTABLEand DEPLOY_REPO_TAG must be set" >&2
   exit 1
 fi
 
-if [[ -z "${DEPLOY_OCI_LOAD_BINARY:-}" || -z "${DEPLOY_REPO_TAG:-}" ]]; then
-  echo "DEPLOY_OCI_LOAD_BINARY and DEPLOY_REPO_TAG must be set" >&2
-  exit 1
-fi
+# execute the OCI_LOAD target
+"$DEPLOY_OCI_LOAD_EXECUTABLE"
 
-"$DEPLOY_OCI_LOAD_BINARY"
-
-docker_args=(--rm -i --network host)
+# prepare docker arguments
+docker_args=(--rm -i --network host $@)
 
 if [[ -n "${DEPLOY_PORT:-}" ]]; then
   docker_args+=(-e PORT="$DEPLOY_PORT" -p "$DEPLOY_PORT:$DEPLOY_PORT")
@@ -58,4 +36,5 @@ fi
 
 docker_args+=("$DEPLOY_REPO_TAG")
 
+# run docker
 docker run "${docker_args[@]}"

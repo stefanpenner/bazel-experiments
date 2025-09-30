@@ -39,9 +39,9 @@ def deploy(name, image, repo_tag, env=None):
       data = [
         ":" + oci_load_target,
         "@bazel_tools//tools/bash/runfiles",
-        ],
+      ],
       env = {
-          "DEPLOY_OCI_LOAD_BINARY": "$(location :{oci_load_target})".format(oci_load_target = oci_load_target),
+          "DEPLOY_OCI_LOAD_EXECUTABLE": "$(location :{oci_load_target})".format(oci_load_target = oci_load_target),
           "DEPLOY_REPO_TAG": repo_tag,
           "DEPLOY_PORT": deploy_port,
           "DEPLOY_ENV_KEYS": " ".join(sorted(deploy_env.keys())) if deploy_env else "",
