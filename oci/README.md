@@ -15,13 +15,13 @@ See the [`examples/`](examples/) directory for working implementations.
 - Host networking enabled (Docker Desktop → Settings → Resources → Network → Enable host networking, then restart Docker)
 
 ### Deploy targets
-- `bazel run //examples/simple-app:deploy` exposes the service on port 8080 with message "Hello, World!"
-- `bazel run //examples/simple-app:deploy.alt` exposes the service on port 9090 with message "Goodnight!"
+- `bazel run //examples/simple-app:deploy` exposes the service on port 8001 with message "Hello, World!"
+- `bazel run //examples/simple-app:deploy.alt` exposes the service on port 8002 with message "Goodnight!"
+- `bazel run //examples/simple-app:deploy.back-to-host` exposes the service on port 8003 with message "back-to-host!"
+- `PORT=8004 MESSAGE=real-host bazel run //examples/simple-app:app.bin` service running on the real host, with message "real-host"
 
 ### Verifying
-- `curl 0.0.0.0:8080` — default handler
-- `curl 0.0.0.0:9090` — alternate handler
-- `curl 0.0.0.0:8080/self` — metadata for the 8080 service
-- `curl 0.0.0.0:9090/self` — metadata for the 9090 service
-- `curl 0.0.0.0:8080/other` — proxies to the service on 9090 (uses `OTHER_SERVICE_URL`)
-- `curl 0.0.0.0:9090/other` — proxies to the service on 8080
+- `curl 0.0.0.0:8001` — default handler(its /other connects to 8002)
+- `curl 0.0.0.0:8002` — alternate handler (its /other connects to 8001)
+- `curl 0.0.0.0:8003` — back-to-host handler (its /other connects to 8004)
+- `curl 0.0.0.0:8004` — handler running only on host.

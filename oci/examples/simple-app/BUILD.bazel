@@ -45,8 +45,8 @@ deploy(
   image = ":app.image",
   repo_tag = "iamstef.net/app:latest",
   container_env = {
-    "PORT": "8080",
-    "OTHER_SERVICE_URL" : "http://0.0.0.0:9090",
+    "PORT": "8001",
+    "OTHER_SERVICE_URL" : "http://0.0.0.0:8002",
     "MESSAGE": "Hello, World!"
   },
 )
@@ -56,8 +56,19 @@ deploy(
   image = ":app.image",
   repo_tag = "iamstef.net/app:alt",
   container_env = {
-    "PORT": "9090",
-    "OTHER_SERVICE_URL" : "http://0.0.0.0:8080",
+    "PORT": "8002",
+    "OTHER_SERVICE_URL" : "http://0.0.0.0:8001",
     "MESSAGE": "Goodnight!"
+  },
+)
+
+deploy(
+  name =  "deploy.back-to-host",
+  image = ":app.image",
+  repo_tag = "iamstef.net/app:alt",
+  container_env = {
+    "PORT": "8003",
+    "OTHER_SERVICE_URL" : "http://127.0.0.1:8004",
+    "MESSAGE": "back-to-host"
   },
 )
