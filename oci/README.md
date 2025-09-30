@@ -7,6 +7,8 @@ This project demonstrates a complete Bazel workflow for building, containerizing
 - Seamless inter-connectivity between host and containerized services
 - Custom Bazel deployment macros for streamlined operations
 
+See the [`examples/`](examples/) directory for working implementations.
+
 ### Requirements
 - Docker Desktop >= 4.34
 - Host networking enabled (Docker Desktop → Settings → Resources → Network → Enable host networking, then restart Docker)
