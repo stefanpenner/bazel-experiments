@@ -6,6 +6,7 @@ This project demonstrates a complete Bazel workflow for building, containerizing
 - Local deployment with `bazel run`
 - Seamless inter-connectivity between host and containerized services
 - Custom Bazel deployment macros for streamlined operations
+- Automatic propagation: changes at any level (code, config, dependencies) are reflected across the entire build and deployment pipeline
 
 See the [`examples/`](examples/) directory for working implementations.
 
