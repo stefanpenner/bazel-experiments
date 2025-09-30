@@ -44,7 +44,7 @@ deploy(
   name =  "deploy",
   image = ":app.image",
   repo_tag = "iamstef.net/app:latest",
-  env = {
+  container_env = {
     "PORT": "8080",
     "OTHER_SERVICE_URL" : "http://0.0.0.0:9090",
     "MESSAGE": "Hello, World!"
@@ -55,7 +55,7 @@ deploy(
   name =  "deploy.alt",
   image = ":app.image",
   repo_tag = "iamstef.net/app:alt",
-  env = {
+  container_env = {
     "PORT": "9090",
     "OTHER_SERVICE_URL" : "http://0.0.0.0:8080",
     "MESSAGE": "Goodnight!"

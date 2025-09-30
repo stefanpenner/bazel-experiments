@@ -9,14 +9,14 @@ def _absolute(rel):
     repo = native.repository_name()  # "@rules_deploy" or "@"
     return Label(rel if repo == "@" else repo + rel)
 
-def deploy(name, image, repo_tag, env=None):
+def deploy(name, image, repo_tag, container_env=None):
   """Deploys an OCI image and runs a Docker command.
 \
   Args:
       name: The name of the top-level deploy target.
       image: The image to be loaded.
       repo_tag: The repository tag for the image.
-      env: Optional dict of additional environment variables to expose.
+      container_env: Optional dict of environment variables to pass to the container.
   """
 
   oci_load_target = name + "_load_oci"
@@ -30,7 +30,7 @@ def deploy(name, image, repo_tag, env=None):
   )
 
   # 2. Wrap the deployment logic in an sh_binary for use with `bazel run`.
-  deploy_env = {k: str(v) for k, v in (env or {}).items()}
+  deploy_env = {k: str(v) for k, v in (container_env or {}).items()}
   deploy_port = deploy_env.get("PORT", "")
 
   sh_binary(
@@ -43,8 +43,8 @@ def deploy(name, image, repo_tag, env=None):
       env = {
           "DEPLOY_OCI_LOAD_EXECUTABLE": "$(location :{oci_load_target})".format(oci_load_target = oci_load_target),
           "DEPLOY_REPO_TAG": repo_tag,
-          "DEPLOY_PORT": deploy_port,
           "DEPLOY_ENV_KEYS": " ".join(sorted(deploy_env.keys())) if deploy_env else "",
       } | deploy_env,
       visibility = ["//visibility:private"],
+      tags = ["local", "no-remote", "requires-network"],
   )

@@ -3,7 +3,9 @@ import handler from './handler.mjs'
 
 const PORT = Number(process.env.PORT) || 8080;
 
-const server = http.createServer(handler);
+const server = http.createServer((req, res) => {
+  handler(req, res);
+});
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`listening on http://0.0.0.0:${PORT}`);
