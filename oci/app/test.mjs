@@ -32,6 +32,7 @@ async function startMainService() {
     process.env.SERVICE_NAME = "app-main";
     process.env.SERVICE_URL = `http://127.0.0.1:${PORT}`;
     process.env.OTHER_SERVICE_URL = `http://127.0.0.1:${OTHER_PORT}/info`;
+    process.env.MESSAGE = "Hello, World!";
     handler(req, res);
   });
 
@@ -40,10 +41,10 @@ async function startMainService() {
   return server;
 }
 
-async function fetchJson(pathname) {
+async function fetchJson(hostname, port,path) {
   return new Promise((resolve, reject) => {
     http
-      .get({ hostname: "127.0.0.1", port: PORT, path: pathname }, (res) => {
+      .get({ hostname, port, path }, (res) => {
         let data = "";
         res.on("data", (chunk) => {
           data += chunk;
@@ -71,7 +72,7 @@ test.after(() => {
 });
 
 test("GET / returns default handler response", async () => {
-  const body = await fetchJson("/");
+  const body = await fetchJson("0.0.0.0", PORT, "/");
 
   assert.strictEqual(body.url, "/");
   assert.strictEqual(body.method, "GET");
@@ -79,7 +80,7 @@ test("GET / returns default handler response", async () => {
 });
 
 test("GET /self returns service metadata", async () => {
-  const body = await fetchJson("/self");
+  const body = await fetchJson("0.0.0.0", PORT, "/self");
 
   assert.deepStrictEqual(body, {
     name: "app-main",
@@ -89,7 +90,7 @@ test("GET /self returns service metadata", async () => {
 });
 
 test("GET /other proxies to configured service", async () => {
-  const body = await fetchJson("/other");
+  const body = await fetchJson("0.0.0.0", PORT, "/other");
 
   assert.deepStrictEqual(body, {
     upstream: "other-service",
