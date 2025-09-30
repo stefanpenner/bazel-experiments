@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Bootstrap runfiles, and ensure they are present
-if [[ ! -v RUNFILES_DIR ]]; then
+if [[ -z "${RUNFILES_DIR+x}" ]]; then
   [[ -d "$0.runfiles" ]] || {
     echo "no runfiles dir; try 'bazel run'"
     exit 1
