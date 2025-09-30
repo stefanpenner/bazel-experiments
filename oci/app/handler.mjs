@@ -6,7 +6,7 @@ function defaultHandler(req, res) {
   res.writeHead(200, { "content-type": "application/json" });
   res.end(
     JSON.stringify({
-      message: `${new Date()} Hello, World!`,
+      message: `${new Date()} ${process.env.MESSAGE}`,
       url: req.url,
       method: req.method,
     }),
