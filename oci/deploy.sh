@@ -11,6 +11,23 @@ if [[ ! -v RUNFILES_DIR ]]; then
   export RUNFILES_DIR="$0.runfiles"
 fi
 
+# check if docker is installed
+if ! command -v docker &>/dev/null; then
+  echo "Error: Docker is not installed or not in PATH" >&2
+  echo "" >&2
+  echo "Please install Docker to run this deployment script." >&2
+  echo "Visit https://docs.docker.com/get-docker/ for installation instructions." >&2
+  echo "" >&2
+  echo "Note: This script uses host networking (--network host)." >&2
+  echo "" >&2
+  echo "Note: On macOS, host networking requires additional setup:" >&2
+  echo "  1. Open Docker Desktop settings" >&2
+  echo "  2. Go to 'Resources' → 'Network'" >&2
+  echo "  3. Enable 'host networking'" >&2
+  echo "  4. Restart Docker Desktop" >&2
+  exit 1
+fi
+
 # ensure mandetory envvar are set
 if [[ -z "${DEPLOY_OCI_LOAD_EXECUTABLE:-}" || -z "${DEPLOY_REPO_TAG:-}" ]]; then
   echo "DEPLOY_OCI_LOAD_EXECUTABLEand DEPLOY_REPO_TAG must be set" >&2
