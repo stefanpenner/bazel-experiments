@@ -35,7 +35,7 @@ def deploy(name, image, repo_tag, container_env=None):
 
   sh_binary(
       name = name,
-      srcs = [_absolute("//:deploy.sh")],
+      srcs = [_absolute("//deploy:deploy.sh")],
       data = [
         ":" + oci_load_target,
         "@bazel_tools//tools/bash/runfiles",

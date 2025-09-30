@@ -3,8 +3,8 @@
 - Host networking enabled (Docker Desktop → Settings → Resources → Network → Enable host networking, then restart Docker)
 
 ### Deploy targets
-- `bazel run //app:deploy` exposes the service on port 8080 with message "Hello, World!"
-- `bazel run //app:deploy.alt` exposes the service on port 9090 with message "Goodnight!"
+- `bazel run //examples/simple-app:deploy` exposes the service on port 8080 with message "Hello, World!"
+- `bazel run //examples/simple-app:deploy.alt` exposes the service on port 9090 with message "Goodnight!"
 
 ### Verifying
 - `curl 0.0.0.0:8080` — default handler

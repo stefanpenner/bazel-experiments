@@ -26,8 +26,8 @@ js_test(
 pkg_tar(
     name = "app.tar",
     srcs = [":app.files"],
-    strip_prefix = "/",
-    package_dir = "/",
+    strip_prefix = ".",
+    package_dir = "/app",
     allow_duplicates_with_different_content = False
 )
 
